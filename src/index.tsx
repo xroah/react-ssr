@@ -1,8 +1,18 @@
 import React from "react";
+import App from "./components/app"
+import { Provider } from "react-redux";
+import reducers from "./reducers";
+import { createStore } from "redux";
 import { hydrate } from "react-dom";
-import App from "./components/app";
+
+const store = createStore(
+    reducers,
+    typeof window !== "undefined" ? (window as any).__INITIAL_STATE__ : {}
+);
 
 hydrate(
-    <App />,
+    <Provider store={store}>
+        <App />
+    </Provider>,
     document.getElementById("root")
-);
+)
