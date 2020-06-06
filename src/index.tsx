@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import reducers from "./reducers";
 import { createStore } from "redux";
 import { hydrate } from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 
 const store = createStore(
     reducers,
@@ -12,7 +13,9 @@ const store = createStore(
 
 hydrate(
     <Provider store={store}>
-        <App />
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </Provider>,
     document.getElementById("root")
 )

@@ -7,6 +7,7 @@ import App from "../src/components/app";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducers from "../src/reducers";
+import { StaticRouter } from "react-router-dom";
 
 const app = express();
 
@@ -35,11 +36,19 @@ app.use((req, res) => {
                 }]
             };
             const store = createStore(reducers, initialState);
+            const context: any = {};
             const content = renderToString(
                 <Provider store={store}>
-                    <App />
+                    <StaticRouter location={req.url} context={context}>
+                        <App />
+                    </StaticRouter>
                 </Provider>
             );
+
+            if (context.url) {
+                return res.redirect(302, context.url);
+            }
+
             const html = data.toString()
                 .replace(/CONTENT_PLACEHOLDER/, content)
                 .replace(/INITIAL_STATE_PLACEHOLDER/, `window.__INITIAL_STATE__=${JSON.stringify(initialState)}`);
